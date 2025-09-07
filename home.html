@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=800">
+	<title>Home Page</title>
+	<style>
+		body {
+			margin: 0;
+			background: #000;
+			color: #fff;
+			font-family: 'Verdana', 'Tahoma', 'Arial', sans-serif;
+			font-size: 13px;
+			background-image: url('images/background.jpeg'); 
+			background-size: cover;
+			background-repeat: repeat;
+			min-width: 100vw;
+			min-height: 100vh;
+		}
+		.main-table {
+			width: 600px;
+			margin: 40px auto 0 auto;
+			background: #1A1A1A;
+			border: 3px solid #FF0000;
+			box-shadow: 0 0 30px #000, 0 0 8px #FF0000 inset;
+			table-layout: auto;
+		}
+		.top-bar {
+			background: #222;
+            background-image: url('images/topbar.jpeg'); 
+			color: #2eb305;
+			font-family: 'Arial Black', 'Impact', 'Haettenschweiler', sans-serif;
+            /* font-family: Georgia, serif; */
+			font-size: 2.2rem;
+			letter-spacing: 2px;
+			padding: 18px 0 12px 0;
+			border-bottom: 2px solid #FF0000;
+			text-shadow: 2px 2px 0 #000000, 0 0 8px #000000;
+			user-select: none;
+            text-align: center;
+			filter: contrast(1.2);
+		}
+		/* .sidebar {
+			width: 120px;
+			background: #111;
+			border-right: 2px solid #FF0000;
+			vertical-align: top;
+			padding: 0 0 0 0;
+		}
+		.sidebar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.sidebar li {
+			margin: 0;
+			padding: 0;
+		}
+		.sidebar a {
+			display: block;
+			color: #39FF14;
+			text-decoration: none;
+			padding: 10px 12px;
+			font-family: 'MS Sans Serif', 'Fixedsys', 'Terminal', monospace;
+			font-size: 13px;
+			border-bottom: 1px solid #222;
+			transition: background 0.1s, color 0.1s;
+		}
+		.sidebar a:hover {
+			background: #222;
+			color: #FF0000;
+			text-decoration: underline;
+		} */
+		.content {
+			padding: 40px 0 40px 0;
+			text-align: center;
+			background: #1A1A1A;
+            gap: 10px;
+		}
+
+		.large-button {
+            display: inline-block;
+			width: 40%;
+			margin: 30px;
+			padding: 32px 0 32px 0;
+			font-family: 'MS Sans Serif', 'Fixedsys', 'Terminal', monospace;
+			font-size: 1.5rem;
+			color: #fff;
+			background: linear-gradient(180deg, #444 0%, #222 100%);
+			border: 6px outset #888;
+			border-radius: 0;
+			box-shadow: 0 2px 0 #000, 0 0 8px #FF0000 inset;
+			cursor: pointer;
+			text-shadow: 2px 2px 0 #000, 0 0 8px #c1c1c1;
+			transition: background 0.1s, color 0.1s;
+		}
+		.large-button:hover {
+			background: #000;
+			color: #2eb305;
+            text-shadow: 1px 1px 0 #2bff00, 0 0 8px #2bff00;
+			border-color: #FF0000;
+		}
+	</style>
+</head>
+<body>
+	<table class="main-table" cellspacing="0" cellpadding="0">
+		<tr>
+			<td colspan="2">
+				<div class="top-bar">BINSJOB</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="content" valign="top" style='white-space: nowrap'>
+				<!-- <img class="grime-img" src="https://i.imgur.com/0Q9wF0B.jpg" alt="Industrial Grime" /> -->
+                    <button class="large-button">ENTER THE VOID</button>
+				    <button class="large-button">SEE THE ARCHIVE</button>
+				<!-- <div class="window">
+					<div class="window-title">ERROR</div>
+					<div class="window-content">This site may be unsafe.<br>Proceed at your own risk.</div> -->
+				<!-- </div> -->
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
