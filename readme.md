@@ -1,2 +1,2 @@
-> npm install --global serve
-> serve
+npm install --global serve
+serve
