@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=800">
+	<title>Waiting Room</title>
+	<style>
+		@font-face { font-family: KazmannSans; src:url('/kazmann-sans/Kazmann\ Sans.ttf')}
+		body {
+			margin: 10;
+			background-image: url('images/site/background.jpeg'); 
+			background-size: cover;
+			min-width: 100vw;
+			min-height: 100vh; 
+		}
+		.flex-container {
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.row {
+			width: auto;
+			border:5px ridge #FF0000;
+		}
+		.top-bar {
+			background: #222;
+			background-image: url('images/site/topbar.jpeg'); 
+			color: #2eb305;
+			font-family: KazmannSans;
+			width: auto;
+			font-size: 2.9rem;
+			letter-spacing: 2px;
+			padding: 18px 0 12px 0;
+			border-bottom: 5px ridge #FF0000;
+			text-shadow: 2px 2px 0 #000000, 0 0 8px #000000;
+			user-select: none;
+            text-align: center;
+			filter: contrast(1.2);
+			position: relative; /* needed for the lapping animation */
+			overflow: hidden;
+			z-index: 2; /* keep text above the animated image */
+		}
+
+		/* Lapping binman animation over the top bar */
+		.top-bar::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: -30%;
+			transform: translateY(-50%);
+			width: 50%;
+			height: 130%;
+			background-image: url('images/site/binman.png');
+			background-repeat: no-repeat;
+			background-size: contain;
+			opacity: 0.95;
+			pointer-events: none;
+			z-index: 1; /* behind the text */
+			animation: lap 8s linear infinite;
+		}
+
+		/* Ensure the textual title sits above the animated pseudo-element */
+		.top-bar .title {
+			position: relative;
+			z-index: 3;
+			pointer-events: none;
+		}
+
+		@keyframes lap {
+			0% { left: -40%; }
+			100% { left: 120%; }
+		}
+		.content {
+			padding: 40px 0 40px 0;
+			text-align: center;
+			align-items: center;
+			background: #1A1A1A;
+			width: auto;
+            gap: 10px;
+			position: relative;
+			overflow: visible;
+		}
+
+		a.large-button {
+			position: absolute;
+			top: 50%;
+			display: inline-block;
+			width: 28%;
+			transform: translateY(-50%);
+			margin: 0;
+			padding: 32px 0;
+			font-family: KazmannSans;
+			font-size: 2.5rem;
+			color: #fff;
+			background: linear-gradient(180deg, #444 0%, #222 100%);
+			border: 6px outset #888;
+			border-radius: 0;
+			box-shadow: 0 2px 0 #000, 0 0 8px #FF0000 inset;
+			cursor: pointer;
+			text-shadow: 2px 2px 0 #000, 0 0 8px #c1c1c1;
+			transition: background 0.1s, color 0.1s;
+			text-decoration: none;
+		}
+
+		/* Left and right specific positions */
+		a.large-button.left { left: 2%; }
+		a.large-button.right { right: 2%; }
+		a.large-button:hover {
+			background: #000;
+			color: #2eb305;
+            text-shadow: 1px 1px 0 #2bff00, 0 0 8px #2bff00;
+			border-color: #FF0000;
+		}
+
+		/* Fish image sits behind the buttons */
+		.fish {
+			max-width: 60%;
+			height: auto;
+			pointer-events: none;
+			position: relative;
+			z-index: 1;
+		}
+
+		/* Buttons should sit above the fish */
+		a.large-button { z-index: 2; }
+	</style>
+</head>
+<body>
+	<div class="flex-container" >
+		<div class="row"> 
+			<div colspan="2">
+				<div class="top-bar"><span class="title">BINSJOB</span></div>
+			</div>
+			<div class="content">
+				<a href="void" class="large-button left">ENTER THE VOID</a>
+				<img src="images/site/fish_guy.jpg" class="fish" alt="fish guy">
+				<a href="archive" class="large-button right">SEE THE ARCHIVE</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
