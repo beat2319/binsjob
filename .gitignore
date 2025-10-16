@@ -1,4 +1,5 @@
 .DS_Store
-.yml
 Dockerfile
-.sh
+context.json
+docker-compose.yml
+entrypoint.sh
