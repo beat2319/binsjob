@@ -128,6 +128,8 @@
 
     /* Popup inner structure */
     .popup{ width:100%; box-sizing:border-box; }
+    .popup-link{ display:block; color:inherit; text-decoration:none; }
+    .popup-link:focus{ outline:2px solid rgba(46,179,5,0.35); outline-offset:2px; }
     .popup-title{
       background: linear-gradient(180deg,#0e6800,#0c7d1b);
       padding:10px 12px;
@@ -179,7 +181,9 @@
 
   <div class="gallery" role="list">
       <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 1</div><div class="popup-body"><img src="images/product/P1010007.jpeg" alt="Shirt 1"></div></div>
+        <a class="popup-link" href="shirt1.html" title="Shirt 1 details">
+          <div class="popup"><div class="popup-title">Shirt 1</div><div class="popup-body"><img src="images/product/P1010007.jpeg" alt="Shirt 1"></div></div>
+        </a>
       </div>
       <div class="card" role="listitem">
         <div class="popup"><div class="popup-title">Shirt 2</div><div class="popup-body"><img src="images/product/P1010012.jpeg" alt="Shirt 2"></div></div>

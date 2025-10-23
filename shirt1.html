@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shirt 1 — Details</title>
+  <style>
+    body{ background:#0f0f10; color:#ddd; font-family: KazmannSans, system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:24px; }
+  .panel{ max-width:900px; margin:0 auto; background:#111; padding:28px; border:6px ridge rgba(46,179,5,0.12); box-shadow:0 18px 60px rgba(0,0,0,0.6); }
+  a.home{ color:#7ff07f; text-decoration:none; display:inline-block; margin-bottom:18px; }
+  .product{ display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; }
+  .product-image img{ display:block; max-width:70%; width:480px; height:auto; border:0; }
+  /* Spline viewer sizing */
+  .spline-wrap{ display:block; width:100%; max-width:640px; margin:0 auto; }
+  spline-viewer{ display:block; width:100%; height:480px; border:0; }
+  .product-image{ flex:1 1 320px; text-align:center; }
+  .product-copy{ flex:1 1 320px; color:#ddd; }
+  @media (max-width:720px){ .product-image img{ max-width:90%; width:auto; } }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <a class="home" href="void.html">← Back to The Void</a>
+    <h1>Shirt 1 — Details</h1>
+    <div class="product">
+      <div class="product-image">
+        <div class="spline-wrap">
+          <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.85/build/spline-viewer.js"></script>
+          <spline-viewer url="https://prod.spline.design/QRb7Mwn4UnA718YN/scene.splinecode"></spline-viewer>
+        </div>
+      </div>
+      <div class="product-copy">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Integer feugiat, nisl at convallis facilisis, sapien risus tristique nibh, sit amet varius quam tortor a sapien. Curabitur non risus vitae urna efficitur luctus. Praesent a nisl id libero dictum viverra. Vivamus at ligula in urna lacinia faucibus.</p>
+        <p>Donec vel nisl vitae lorem gravida congue. Phasellus at arcu non massa tempor dictum. Nulla facilisi. Aenean vitae sem at est tristique dictum. Nam ac justo vitae arcu vulputate hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis sit amet augue sed nisi convallis malesuada.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
