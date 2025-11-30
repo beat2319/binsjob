@@ -1,213 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>The Void</title>
-  <style>
-    @font-face { font-family: KazmannSans; src: url('/kazmann-sans/Kazmann\ Sans.ttf'); }
-    :root{
-      --gap: 12px;
-      --bg: #0f0f10;
-      --card: #1a1a1a;
-      --accent: #2eb305;
-      --max-width: 1200px;
-    }
-    body{
-      margin:0;
-      font-family: KazmannSans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(circle at 10% 10%, #111 0%, var(--bg) 40%);
-      color: #ddd;
-      display:flex;
-      justify-content:center;
-      padding:24px;
-    }
-    .page{
-      width:100%;
-      max-width:var(--max-width);
-    }
-    /* Loud topbar for The Void */
-    .void-topbar{
-      background: #111;
-      background-image: url('images/site/topbar.jpeg');
-      background-size: cover;
-      color: var(--accent);
-      font-family: KazmannSans, Verdana, Arial, sans-serif;
-      font-size: 2.6rem;
-      text-transform: uppercase;
-      text-shadow: 2px 2px 0 #000000, 0 0 8px #000000;
-      letter-spacing: 2px;
-      padding: 18px 8px;
-      border: 6px ridge rgba(0,200,0,0.35); /* defined green ridge */
-      border-bottom-width: 8px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.85), inset 0 4px 0 rgba(0,255,0,0.04), 0 0 24px rgba(0,255,0,0.04);
-      margin-bottom: 12px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE VOID // INVENTORY</title>
+    <style>
+        @font-face { 
+            font-family: KazmannSans; 
+            src: url('kazmann-sans/Kazmann Sans.ttf'); 
+        }
 
-    .void-topbar::before{
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: -40%;
-      transform: translateY(-50%);
-      width: 45%;
-      height: 140%;
-      background-image: url('images/site/binman.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.98;
-      pointer-events: none;
-      z-index: 1;
-      animation: lap-void 7s linear infinite;
-    }
+        :root {
+            --blood-red: #ff0000;
+            --void-bg: #050505;
+        }
 
-    .void-topbar .title{ position: relative; z-index: 2; pointer-events:none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @keyframes lap-void{ 0%{ left: -50%; } 100%{ left: 120%; } }
+        body {
+            background-color: var(--void-bg);
+            color: #ddd;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
 
-    /* bottom bar mirrors the topbar but contains no text */
-    .void-bottombar{
-      background: #111;
-      background-image: url('images/site/topbar.jpeg');
-      background-size: cover;
-      height: 72px;
-      border: 6px ridge rgba(0,200,0,0.35);
-      border-top-width: 8px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 -14px 48px rgba(0,0,0,0.85), inset 0 -4px 0 rgba(0,255,0,0.03), 0 0 18px rgba(0,255,0,0.03);
-      margin-top: 18px;
-    }
+        /* 3D Canvas Background */
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
 
-    .void-bottombar::before{
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 120%;
-      transform: translateY(-50%);
-      width: 40%;
-      height: 140%;
-      background-image: url('images/site/binman.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.95;
-      pointer-events: none;
-      z-index: 1;
-      animation: lap-void-rev 8s linear infinite;
-    }
+        /* Scanline Overlay - Now strictly background atmosphere */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(10, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0.05), rgba(255, 0, 0, 0.03));
+            z-index: 5; /* Lower z-index so it doesn't cover the floating items (z-index 10+) */
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
 
-    @keyframes lap-void-rev{ 0%{ left: 120%; } 100%{ left: -50%; } }
+        /* Navigation */
+        .void-nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        
+        .void-nav a {
+            pointer-events: auto;
+            color: #fff;
+            text-decoration: none;
+            font-family: KazmannSans;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0 #000;
+            transition: color 0.3s;
+        }
 
-    h1{ text-align:center; color:var(--accent); margin:6px 0 18px 0; }
+        .void-nav a:hover { 
+            color: var(--blood-red); 
+            text-shadow: 0 0 15px var(--blood-red);
+        }
 
-    /* Gallery */
-    .gallery{
-      display:flex;
-      flex-wrap:wrap;
-      gap:var(--gap);
-      align-items:flex-start;
-      justify-content:center;
-    }
-    .card{
-      /* Windows-like popup style */
-      background: linear-gradient(180deg,#efefef,#e6e6e6);
-      color: #111;
-      border:2px solid #bfbfbf;
-      padding:0;
-      width: calc(33.333% - var(--gap)); /* 3 columns default */
-      box-sizing:border-box;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.45), inset 0 1px 0 #ffffff;
-      border-radius:0;
-    }
+        /* Main Scroll Wrapper */
+        .void-space {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 150px 50px 200px 50px;
+        }
 
-    /* Popup inner structure */
-    .popup{ width:100%; box-sizing:border-box; }
-    .popup-link{ display:block; color:inherit; text-decoration:none; }
-    .popup-link:focus{ outline:2px solid rgba(46,179,5,0.35); outline-offset:2px; }
-    .popup-title{
-      background: linear-gradient(180deg,#0e6800,#0c7d1b);
-      padding:10px 12px;
-      font-weight: bold;
-      color:#000;
-      border-bottom:1px solid #9a9a9a;
-      text-align:center;
-      font-family: KazmannSans, Verdana, Arial, sans-serif;
-      text-transform: none;
-    }
-  .popup-body{ padding:12px; color:#222; text-align:center; }
-  .popup-body img{ max-width:100%; height:auto; display:block; margin:0 auto; border:0; }
+        /* Floating Grid Layout */
+        .floating-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            row-gap: 150px;
+            column-gap: 50px;
+        }
 
-    /* Responsive columns */
-    @media (max-width:900px){
-      .card{ width: calc(50% - var(--gap)); }
-    }
-    @media (max-width:520px){
-      .card{ width: 100%; }
-    }
+        /* Item Container */
+        .float-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            animation: float-anim 6s ease-in-out infinite;
+            z-index: 20; /* Ensure items sit ABOVE the scanlines */
+        }
 
-    /* Text box area */
-    .notes{
-      margin-top:18px;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .notes textarea{
-      flex:1;
-      min-height:120px;
-      resize:vertical;
-      padding:12px;
-      background:var(--card);
-      border:1px solid rgba(255,255,255,0.04);
-      color:#fff;
-  border-radius:0;
-      font-size:14px;
-      box-shadow:0 2px 0 rgba(0,0,0,0.6) inset;
-    }
+        .float-item:nth-child(2n) { animation-delay: 1s; margin-top: 50px; }
+        .float-item:nth-child(3n) { animation-delay: 2s; margin-top: -30px; }
+        
+        @keyframes float-anim {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
 
-    /* Small helper */
-    .help{ width:220px; color:#aaa; font-size:13px; }
-  </style>
+        /* Image Visual Container - Minimal Frame */
+        .item-visual {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1/1;
+            /* Removed heavy background tint */
+            background: transparent; 
+            /* Subtle border */
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* CLEAN PRODUCT IMAGES */
+        .item-visual img {
+            width: 95%; /* Make slightly larger to emphasize item */
+            height: auto;
+            /* No Filters - Raw Image */
+            filter: none;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            drop-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Hover Interaction */
+        .float-item:hover .item-visual {
+            border-color: var(--blood-red);
+            /* Add a subtle glow behind the item on hover, not over it */
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.15); 
+            background: rgba(0,0,0,0.4);
+        }
+
+        .float-item:hover img {
+            transform: scale(1.1);
+            /* Slight pop on hover */
+            drop-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        /* Item Details */
+        .item-data {
+            margin-top: 20px;
+            text-align: center;
+            opacity: 0.8; /* Increased visibility */
+            transition: opacity 0.3s;
+        }
+
+        .item-title {
+            font-family: KazmannSans;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 5px #000;
+        }
+
+        .item-price {
+            color: var(--blood-red);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Bin Action Button */
+        .bin-action {
+            background: transparent;
+            border: 1px solid #555;
+            color: #aaa;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        .bin-action:hover {
+            border-color: var(--blood-red);
+            color: #fff;
+            background: var(--blood-red);
+            box-shadow: 0 0 15px rgba(255,0,0,0.5);
+        }
+
+        /* Bin UI */
+        .bin-ui {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border: 2px solid #333;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        
+        .bin-ui:hover {
+            border-color: var(--blood-red);
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .bin-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--blood-red);
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Binman Sprite */
+        .binman-sprite {
+            position: fixed;
+            bottom: -200px;
+            right: 20px;
+            width: 180px;
+            transition: bottom 0.4s ease-out;
+            z-index: 999;
+            pointer-events: none;
+            filter: contrast(120%) drop-shadow(0 0 10px #000);
+        }
+
+        .bin-ui:hover ~ .binman-sprite {
+            bottom: -40px;
+        }
+
+        /* Background Text (Lore) */
+        .bg-text {
+            position: absolute;
+            font-family: KazmannSans;
+            color: rgba(255, 0, 0, 0.04);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 900px) {
+            .floating-grid { grid-template-columns: 1fr; gap: 80px; }
+        }
+
+    </style>
 </head>
 <body>
-  <div class="page">
-  <div class="void-topbar"><span class="title">THE VOID</span></div>
 
-  <div class="gallery" role="list">
-      <div class="card" role="listitem">
-        <a class="popup-link" href="shirt1.html" title="Shirt 1 details">
-          <div class="popup"><div class="popup-title">Shirt 1</div><div class="popup-body"><img src="images/product/P1010007.jpeg" alt="Shirt 1"></div></div>
-        </a>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 2</div><div class="popup-body"><img src="images/product/P1010012.jpeg" alt="Shirt 2"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 3</div><div class="popup-body"><img src="images/product/P1010016.jpeg" alt="Shirt 3"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 4</div><div class="popup-body"><img src="images/product/P1010020.jpeg" alt="Shirt 4"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 5</div><div class="popup-body"><img src="images/product/P1010024.jpeg" alt="Shirt 5"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 6</div><div class="popup-body"><img src="images/product/P1010025.jpeg" alt="Shirt 6"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 7</div><div class="popup-body"><img src="images/product/P1010034.jpeg" alt="Shirt 7"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 8</div><div class="popup-body"><img src="images/product/P1010038.jpeg" alt="Shirt 8"></div></div>
-      </div>
+    <div id="canvas-container"></div>
+
+    <nav class="void-nav">
+        <a href="index.html">&lt; PORTAL</a>
+        <a href="archive.html">ARCHIVE &gt;</a>
+    </nav>
+
+    <div class="void-space">
+        
+        <div class="bg-text" style="top: 10%; left: 5%; font-size: 10rem;">VOID</div>
+        <div class="bg-text" style="top: 40%; right: -10%; font-size: 8rem; transform: rotate(90deg);">CONSUME</div>
+        <div class="bg-text" style="bottom: 10%; left: 20%; font-size: 6rem;">ERROR_404</div>
+
+        <div class="floating-grid">
+            
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010007.jpeg" alt="Shirt 1">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">300 SPARTAN</div>
+                    <div class="item-price">$40.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010012.jpeg" alt="Shirt 2">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">MST3K ROBOT</div>
+                    <div class="item-price">$45.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010016.jpeg" alt="Shirt 3">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">NATIVE GEO</div>
+                    <div class="item-price">$35.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010020.jpeg" alt="Shirt 4">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">SURF CAMP</div>
+                    <div class="item-price">$30.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010024.jpeg" alt="Shirt 5">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">HARLEY EAGLE</div>
+                    <div class="item-price">$50.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <div class="item-visual">
+                    <img src="images/product/P1010025.jpeg" alt="Shirt 6">
+                </div>
+                <div class="item-data">
+                    <div class="item-title">REVOLUTION</div>
+                    <div class="item-price">$40.00</div>
+                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                </div>
+            </div>
+
+        </div>
     </div>
-  <div class="void-bottombar" aria-hidden="true"></div>
-  </div>
+
+    <div class="bin-ui">
+        🗑️
+        <div class="bin-counter" id="count">0</div>
+    </div>
+    <img src="images/site/binman.png" class="binman-sprite" alt="Binman">
+
+    <script>
+        let items = 0;
+        function toBin() {
+            items++;
+            document.getElementById('count').innerText = items;
+            
+            // Red Jiggle
+            const bin = document.querySelector('.bin-ui');
+            bin.style.transform = 'scale(1.4) rotate(-10deg)';
+            bin.style.borderColor = '#fff';
+            setTimeout(() => {
+                bin.style.transform = 'scale(1) rotate(0deg)';
+                bin.style.borderColor = '#333';
+            }, 200);
+        }
+    </script>
+
+    <script type="importmap">
+        { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        // Same noise chunk as before
+        const noiseChunk = `
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+            float snoise(vec3 v) {
+                const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                vec3 i  = floor(v + dot(v, C.yyy));
+                vec3 x0 = v - i + dot(i, C.xxx);
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min(g.xyz, l.zxy);
+                vec3 i2 = max(g.xyz, l.zxy);
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy;
+                vec3 x3 = x0 - D.yyy;
+                i = mod289(i);
+                vec4 p = permute(permute(permute(i.z + vec4(0.0, i1.z, i2.z, 1.0)) + i.y + vec4(0.0, i1.y, i2.y, 1.0)) + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                float n_ = 0.142857142857;
+                vec3 ns = n_ * D.wyz - D.xzx;
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_);
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+                vec4 b0 = vec4(x.xy, y.xy);
+                vec4 b1 = vec4(x.zw, y.zw);
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                vec3 p0 = vec3(a0.xy, h.x);
+                vec3 p1 = vec3(a0.zw, h.y);
+                vec3 p2 = vec3(a1.xy, h.z);
+                vec3 p3 = vec3(a1.zw, h.w);
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+                p0 *= norm.x;
+                p1 *= norm.y;
+                p2 *= norm.z;
+                p3 *= norm.w;
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+            }
+        `;
+
+        const vertexShader = `
+            uniform float uTime;
+            uniform float uFrequency;
+            ${noiseChunk}
+            void main() {
+                mat4 instanceMat = instanceMatrix;
+                vec3 instancePos = vec3(instanceMat[3][0], instanceMat[3][1], instanceMat[3][2]);
+                vec3 noiseCoord = instancePos * uFrequency;
+                float noise1 = snoise(vec3(noiseCoord.x, noiseCoord.y, uTime * 0.2));
+                float noise2 = snoise(vec3(noiseCoord.x * 2.0, noiseCoord.y * 2.0, uTime * 0.3 + 100.0));
+                float combinedNoise = noise1 * 0.6 + noise2 * 0.4;
+                float visibility = smoothstep(-0.4, 0.4, combinedNoise);
+                float scale = mix(0.0, 1.0, visibility);
+                vec3 displaced = position;
+                displaced.z += combinedNoise * 10.0;
+                vec3 scaledPosition = displaced * scale;
+                vec4 mvPosition = modelViewMatrix * instanceMat * vec4(scaledPosition, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        const fragmentShader = `
+            void main() {
+                // Blood Red Atmosphere
+                vec3 color = vec3(0.12, 0.0, 0.0); 
+                vec3 normal = normalize(cross(dFdx(vec3(gl_FragCoord.xy, 0.0)), dFdy(vec3(gl_FragCoord.xy, 0.0))));
+                float edge = abs(normal.z);
+                color += vec3(0.2, 0.0, 0.0) * (1.0 - edge);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.015);
+        
+        const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 80);
+        camera.lookAt(0,0,0);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const gridSize = 100; 
+        const spacing = 2.5;
+        const count = gridSize * gridSize;
+        const geometry = new THREE.BoxGeometry(2,2,2);
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uFrequency: { value: 0.04 }
+            },
+            vertexShader,
+            fragmentShader,
+            side: THREE.DoubleSide
+        });
+
+        const mesh = new THREE.InstancedMesh(geometry, material, count);
+        const dummy = new THREE.Object3D();
+        let idx = 0;
+        for(let x=0; x<gridSize; x++){
+            for(let y=0; y<gridSize; y++){
+                dummy.position.set( (x - gridSize/2)*spacing, (y - gridSize/2)*spacing, -20);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(idx++, dummy.matrix);
+            }
+        }
+        mesh.instanceMatrix.needsUpdate = true;
+        scene.add(mesh);
+
+        const clock = new THREE.Clock();
+        function animate(){
+            requestAnimationFrame(animate);
+            material.uniforms.uTime.value = clock.getElapsedTime();
+            mesh.rotation.x = Math.sin(clock.getElapsedTime()*0.1)*0.05;
+            renderer.render(scene, camera);
+        }
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
 </body>
 </html>

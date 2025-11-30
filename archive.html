@@ -1,209 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>The Archive</title>
-  <style>
-    @font-face { font-family: KazmannSans; src: url('/kazmann-sans/Kazmann\ Sans.ttf'); }
-    :root{
-      --gap: 12px;
-      --bg: #0f0f10;
-      --card: #1a1a1a;
-      --accent: #cfcfcf; /* light gray accent replacing green */
-      --max-width: 1200px;
-    }
-    body{
-      margin:0;
-      font-family: KazmannSans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(circle at 10% 10%, #111 0%, var(--bg) 40%);
-      color: #ddd;
-      display:flex;
-      justify-content:center;
-      padding:24px;
-    }
-    .page{
-      width:100%;
-      max-width:var(--max-width);
-    }
-    /* Loud topbar for The Void */
-    .archive-topbar{
-      background: #111;
-      background-image: url('images/site/topbar.jpeg');
-      background-size: cover;
-      color: var(--accent);
-      font-family: KazmannSans, Verdana, Arial, sans-serif;
-      font-size: 2.6rem;
-      text-transform: uppercase;
-      text-shadow: 2px 2px 0 #000000, 0 0 8px #000000;
-      letter-spacing: 2px;
-      padding: 18px 8px;
-  border: 6px ridge rgba(200,200,200,0.35); /* gray ridge */
-      border-bottom-width: 8px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-  box-shadow: 0 18px 60px rgba(0,0,0,0.85), inset 0 4px 0 rgba(200,200,200,0.04), 0 0 24px rgba(200,200,200,0.04);
-      margin-bottom: 12px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE // LOGS</title>
+    <style>
+        @font-face { 
+            font-family: KazmannSans; 
+            src: url('kazmann-sans/Kazmann Sans.ttf'); 
+        }
 
-    .archive-topbar::before{
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: -40%;
-      transform: translateY(-50%);
-      width: 45%;
-      height: 140%;
-      background-image: url('images/site/binman.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.98;
-      pointer-events: none;
-      z-index: 0;
-      animation: lap-archive 7s linear infinite;
-    }
+        :root {
+            --term-green: #00ff41;
+            --term-dim: #003b00;
+            --bg-color: #050505;
+        }
 
-    .archive-topbar .title{ position: relative; z-index: 2; pointer-events:none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @keyframes lap-archive{ 0%{ left: -50%; } 100%{ left: 120%; } }
+        body {
+            background-color: var(--bg-color);
+            background-image: url('images/site/topbar.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ddd;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+        }
 
-    /* bottom bar mirrors the topbar but contains no text */
-    .archive-bottombar{
-      background: #111;
-      background-image: url('images/site/topbar.jpeg');
-      background-size: cover;
-      height: 72px;
-  border: 6px ridge rgba(200,200,200,0.35);
-      border-top-width: 8px;
-      position: relative;
-      overflow: hidden;
-  box-shadow: 0 -14px 48px rgba(0,0,0,0.85), inset 0 -4px 0 rgba(200,200,200,0.03), 0 0 18px rgba(200,200,200,0.03);
-      margin-top: 18px;
-    }
+        /* Dark overlay to make text readable over the building image */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: -1;
+        }
 
-    .archive-bottombar::before{
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 120%;
-      transform: translateY(-50%);
-      width: 40%;
-      height: 140%;
-      background-image: url('images/site/binman.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.95;
-      pointer-events: none;
-      z-index: 0;
-      animation: lap-archive-rev 8s linear infinite;
-    }
+        /* CRT Scanline Overlay */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
 
-    @keyframes lap-archive-rev{ 0%{ left: 120%; } 100%{ left: -50%; } }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            /* Reduced top padding to move "Return to Portal" up */
+            padding: 20px 20px 100px 20px; 
+            position: relative;
+            z-index: 10;
+        }
 
-    h1{ text-align:center; color:var(--accent); margin:6px 0 18px 0; }
+        /* Header Section */
+        header {
+            border-bottom: 2px solid var(--term-green);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
 
-    /* Gallery */
-    .gallery{
-      display:flex;
-      flex-wrap:wrap;
-      gap:var(--gap);
-      align-items:flex-start;
-      justify-content:center;
-    }
-    .card{
-      /* Windows-like popup style */
-      background: linear-gradient(180deg,#efefef,#e6e6e6);
-      color: #111;
-      border:2px solid #bfbfbf;
-      padding:0;
-      width: calc(33.333% - var(--gap)); /* 3 columns default */
-      box-sizing:border-box;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.45), inset 0 1px 0 #ffffff;
-      border-radius:0;
-    }
+        h1 {
+            font-family: KazmannSans, sans-serif;
+            font-size: 4rem;
+            color: #fff;
+            text-transform: uppercase;
+            line-height: 0.8;
+            text-shadow: 4px 4px 0px var(--term-dim);
+        }
 
-    /* Popup inner structure */
-    .popup{ width:100%; box-sizing:border-box; }
-    .popup-title{
-      background: linear-gradient(180deg,#dcdcdc,#cfcfcf);
-      padding:10px 12px;
-      font-weight: bold;
-      color:#000;
-      border-bottom:1px solid #9a9a9a;
-      text-align:center;
-      font-family: KazmannSans, Verdana, Arial, sans-serif;
-      text-transform: none;
-    }
-  .popup-body{ padding:12px; color:#222; text-align:center; }
-  .popup-body img{ max-width:100%; height:auto; display:block; margin:0 auto; border:0; }
+        .sys-info {
+            text-align: right;
+            font-size: 12px;
+            color: var(--term-green);
+            line-height: 1.4;
+        }
 
-    /* Responsive columns */
-    @media (max-width:900px){
-      .card{ width: calc(50% - var(--gap)); }
-    }
-    @media (max-width:520px){
-      .card{ width: 100%; }
-    }
+        a.back-link {
+            color: #fff;
+            text-decoration: none;
+            background: #222;
+            padding: 5px 10px;
+            border: 1px solid #555;
+            font-size: 12px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px; /* Slight spacing above title */
+        }
+        a.back-link:hover {
+            background: var(--term-green);
+            color: #000;
+        }
 
-    /* Text box area */
-    .notes{
-      margin-top:18px;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .notes textarea{
-      flex:1;
-      min-height:120px;
-      resize:vertical;
-      padding:12px;
-      background:var(--card);
-      border:1px solid rgba(255,255,255,0.04);
-      color:#fff;
-  border-radius:0;
-      font-size:14px;
-      box-shadow:0 2px 0 rgba(0,0,0,0.6) inset;
-    }
+        /* The Data Table */
+        .archive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
-    /* Small helper */
-    .help{ width:220px; color:#aaa; font-size:13px; }
-  </style>
+        .entry {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px; /* ID | Name/Desc | Status */
+            align-items: center;
+            border: 1px solid #222;
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .entry:hover {
+            background: #111;
+            border-color: var(--term-green);
+            transform: translateX(10px);
+        }
+
+        .id-code {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .item-info h2 {
+            font-size: 1.2rem;
+            font-weight: normal;
+            margin-bottom: 4px;
+            color: #eee;
+        }
+
+        .item-tags {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status {
+            font-family: KazmannSans, sans-serif;
+            font-size: 1.2rem;
+            color: var(--term-green);
+            text-align: right;
+            transform: rotate(-2deg);
+        }
+
+        /* Image interaction - Hidden by default, appears on hover */
+        .preview-img {
+            position: absolute;
+            right: 120px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.8) rotate(5deg);
+            width: 150px;
+            height: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: grayscale(100%) contrast(150%);
+            z-index: 20;
+            border: 2px solid #fff;
+            box-shadow: 10px 10px 0 #000;
+        }
+
+        .entry:hover .preview-img {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.5) rotate(0deg);
+            right: 180px; /* Move it out slightly */
+        }
+
+        /* Binman - The Custodian (Moved Lower) */
+        .binman-wrapper {
+            position: fixed;
+            bottom: -150px; /* Moved down significantly */
+            right: -20px;
+            width: 300px;
+            height: 400px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .binman {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(-10px -10px 20px rgba(0,0,0,0.8));
+            animation: breathe 4s infinite ease-in-out;
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: 40px;
+            left: -100px;
+            background: #fff;
+            color: #000;
+            padding: 10px 15px;
+            font-family: KazmannSans, sans-serif;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 140px;
+            text-align: center;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0);
+            animation: popup 5s infinite 2s; /* Delays text appearance */
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #fff transparent;
+            display: block;
+            width: 0;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes popup {
+            0%, 90% { opacity: 0; transform: scale(0); }
+            10%, 80% { opacity: 1; transform: scale(1) rotate(-5deg); }
+        }
+
+        /* Random Stamps / Decor */
+        .stamp {
+            position: fixed;
+            font-family: KazmannSans;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 10rem;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .entry { grid-template-columns: 1fr; gap: 10px; }
+            .preview-img { display: none; } 
+            h1 { font-size: 2.5rem; }
+            .binman-wrapper { width: 150px; bottom: -50px; right: 0; }
+            .speech-bubble { display: none; }
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-  <div class="archive-topbar"><span class="title">THE ARCHIVE</span></div>
 
-  <div class="gallery" role="list">
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 1</div><div class="popup-body"><img src="images/product/P1010007.jpeg" alt="Shirt 1"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 2</div><div class="popup-body"><img src="images/product/P1010012.jpeg" alt="Shirt 2"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 3</div><div class="popup-body"><img src="images/product/P1010016.jpeg" alt="Shirt 3"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 4</div><div class="popup-body"><img src="images/product/P1010020.jpeg" alt="Shirt 4"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 5</div><div class="popup-body"><img src="images/product/P1010024.jpeg" alt="Shirt 5"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 6</div><div class="popup-body"><img src="images/product/P1010025.jpeg" alt="Shirt 6"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 7</div><div class="popup-body"><img src="images/product/P1010034.jpeg" alt="Shirt 7"></div></div>
-      </div>
-      <div class="card" role="listitem">
-        <div class="popup"><div class="popup-title">Shirt 8</div><div class="popup-body"><img src="images/product/P1010038.jpeg" alt="Shirt 8"></div></div>
-      </div>
+    <div class="stamp" style="top: 20%; left: -5%; transform: rotate(-15deg);">ARCHIVE</div>
+    <div class="stamp" style="bottom: 10%; right: 10%; transform: rotate(10deg); font-size: 6rem;">DATA</div>
+
+    <div class="container">
+        <header>
+            <div>
+                <a href="index.html" class="back-link">&lt;&lt; RETURN TO PORTAL</a>
+                <h1>THE_ARCHIVE</h1>
+            </div>
+            <div class="sys-info">
+                SYS_TIME: <span id="clock">00:00:00</span><br>
+                MEM_USAGE: 94%<br>
+                ERRORS: 404
+            </div>
+        </header>
+
+        <div class="archive-list">
+            
+            <div class="entry">
+                <div class="id-code">#A-001</div>
+                <div class="item-info">
+                    <h2>Harley "Eagle" Tee</h2>
+                    <div class="item-tags">Vintage // Cotton // 2004</div>
+                </div>
+                <div class="status">AVAILABLE</div>
+                <img src="images/product/P1010024.jpeg" class="preview-img" alt="Product">
+            </div>
+
+            <div class="entry">
+                <div class="id-code">#A-002</div>
+                <div class="item-info">
+                    <h2>"Revolution" Print</h2>
+                    <div class="item-tags">Graphic // Rare // Distressed</div>
+                </div>
+                <div class="status">LOW_STOCK</div>
+                <img src="images/product/P1010025.jpeg" class="preview-img" alt="Product">
+            </div>
+
+            <div class="entry">
+                <div class="id-code">#B-104</div>
+                <div class="item-info">
+                    <h2>Surf Camp Australia</h2>
+                    <div class="item-tags">Souvenir // Black // Fade</div>
+                </div>
+                <div class="status">AVAILABLE</div>
+                <img src="images/product/P1010020.jpeg" class="preview-img" alt="Product">
+            </div>
+
+            <div class="entry">
+                <div class="id-code">#C-099</div>
+                <div class="item-info">
+                    <h2>Northern Thunder</h2>
+                    <div class="item-tags">Harley Davidson // Canada</div>
+                </div>
+                <div class="status">ARCHIVED</div>
+                <img src="images/product/P1010034.jpeg" class="preview-img" alt="Product">
+            </div>
+
+            <div class="entry">
+                <div class="id-code">#X-999</div>
+                <div class="item-info">
+                    <h2>Mystery Science T3K</h2>
+                    <div class="item-tags">Crow // TV // Cult</div>
+                </div>
+                <div class="status">SOLD_OUT</div>
+                <img src="images/product/P1010012.jpeg" class="preview-img" alt="Product">
+            </div>
+
+            <div class="entry">
+                <div class="id-code">#Z-001</div>
+                <div class="item-info">
+                    <h2>TDK Splatter</h2>
+                    <div class="item-tags">Audio // Tech // Grunge</div>
+                </div>
+                <div class="status">DAMAGED</div>
+                <img src="images/product/P1010038.jpeg" class="preview-img" alt="Product">
+            </div>
+
+        </div>
     </div>
-  <div class="archive-bottombar" aria-hidden="true"></div>
-  </div>
+
+    <div class="binman-wrapper">
+        <div class="speech-bubble">I keep the trash safe...</div>
+        <img src="images/site/binman.png" class="binman" alt="The Binman">
+    </div>
+
+    <script>
+        // Simple Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
 </body>
 </html>
