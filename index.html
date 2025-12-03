@@ -1,10 +1,279 @@
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINSJOB // ENTER</title>
+    <style>
+        @font-face { 
+            font-family: KazmannSans; 
+            src: url('kazmann-sans/Kazmann Sans.ttf'); 
+        }
 
-<model-viewer 
-  src="./3d_scans/smashing pumpkins.glb" 
-  alt="A 3D model of a Billie Hoodie"
-  camera-controls 
-  camera-target="0m 0.5m 0m"
-  style="width: 100%; height: 100%; background-color: transparent;"
->
-</model-viewer>
+        :root {
+            --ui-red: #ff0000;
+            --ui-bg: #0a0a0a;
+            --ui-border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #ddd;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- BACKGROUND SYSTEM --- */
+        .bg-layer {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: url('images/site/background.jpeg');
+            background-size: 400px;
+            opacity: 0.8; 
+            z-index: -2;
+            animation: slow-spin 180s linear infinite;
+            transition: filter 0.5s ease;
+        }
+        
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 30%, #000 95%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes slow-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- INTERACTION: PAGE COLOR SHIFT --- */
+        /* When hovering Archive, kill the background color */
+        body:has(.nav-btn.archive:hover) .bg-layer {
+            filter: grayscale(100%) brightness(0.4) contrast(1.2);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .portal-container {
+            position: relative;
+            width: 1000px;
+            max-width: 95vw;
+            background: var(--ui-bg);
+            border: 2px solid var(--ui-red);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.5s ease;
+        }
+
+        /* Archive Hover: Change border to gray */
+        body:has(.nav-btn.archive:hover) .portal-container {
+            border-color: #555;
+        }
+
+        /* --- HEADER & BINMAN ANIMATION --- */
+        .portal-header {
+            height: 100px;
+            background-image: url('images/site/topbar.jpeg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--ui-red);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .portal-header::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); 
+            z-index: 1;
+        }
+
+        /* The Binman Ghost */
+        .binman-ghost {
+            position: absolute;
+            top: 10%;
+            height: 120%;
+            width: auto;
+            opacity: 0.6;
+            filter: grayscale(100%) contrast(150%);
+            z-index: 0;
+            animation: ghost-walk 15s linear infinite;
+        }
+
+        @keyframes ghost-walk {
+            0% { left: -100px; transform: scaleX(1); }
+            49% { left: 110%; transform: scaleX(1); }
+            50% { left: 110%; transform: scaleX(-1); }
+            100% { left: -100px; transform: scaleX(-1); }
+        }
+
+        .logo-text {
+            position: relative;
+            font-family: KazmannSans;
+            font-size: 4rem;
+            color: #00ff00;
+            text-shadow: 2px 2px 0px #000;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        /* --- CONTENT AREA --- */
+        .portal-body {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* CENTER IMAGE (Fish Guy) */
+        .center-stage {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .fish-guy {
+            height: 110%;
+            width: auto;
+            object-fit: cover;
+            /* DEFAULT: 70% COLOR (Vintage Feel) */
+            filter: saturate(0.7) contrast(110%) brightness(0.9);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* BUTTON ZONES */
+        .action-zone {
+            position: relative;
+            z-index: 10;
+            width: 30%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .action-zone.right {
+            background: linear-gradient(-90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        /* THE BUTTONS */
+        .nav-btn {
+            display: block;
+            width: 200px;
+            padding: 20px 10px;
+            border: 2px solid #fff;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            font-family: KazmannSans;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        /* --- HOVER INTERACTIONS --- */
+        
+        /* 1. Enter The Void Hover */
+        .nav-btn.void:hover {
+            background: var(--ui-red);
+            border-color: var(--ui-red);
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        /* VOID REACTION: Fish Guy goes FULL COLOR & VIBRANT */
+        .portal-body:has(.nav-btn.void:hover) .fish-guy {
+            filter: saturate(1.2) contrast(100%) brightness(1.0);
+            transform: translateX(20px) scale(1.05);
+        }
+
+        /* 2. Archive Hover */
+        .nav-btn.archive:hover {
+            background: #555;
+            border-color: #999;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* ARCHIVE REACTION: Fish Guy goes BLACK & WHITE */
+        .portal-body:has(.nav-btn.archive:hover) .fish-guy {
+            filter: grayscale(100%) contrast(120%) brightness(0.8);
+            transform: scaleX(-1) translateX(20px) scale(1.05);
+        }
+
+        /* MOBILE ADJUSTMENTS */
+        @media (max-width: 800px) {
+            .portal-container { width: 100%; border: none; }
+            .portal-header { height: 80px; }
+            .logo-text { font-size: 2.5rem; }
+            .portal-body { flex-direction: column; justify-content: center; gap: 20px; }
+            .action-zone { width: 80%; height: auto; background: none; }
+            .nav-btn { width: 100%; font-size: 1.5rem; }
+            .center-stage { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+    <div class="vignette"></div>
+
+    <div class="portal-container">
+        
+        <div class="portal-header">
+            <img src="images/site/binman.png" class="binman-ghost" alt="Binman">
+            <div class="logo-text">BINSJOB</div>
+        </div>
+
+        <div class="portal-body">
+            
+            <div class="action-zone left">
+                <a href="void.html" class="nav-btn void">ENTER<br>THE VOID</a>
+            </div>
+
+            <div class="center-stage">
+                <img src="images/site/fish_guy.jpg" alt="The Fish Guy" class="fish-guy">
+            </div>
+
+            <div class="action-zone right">
+                <a href="archive.html" class="nav-btn archive">SEE THE<br>ARCHIVE</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
