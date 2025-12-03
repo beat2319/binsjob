@@ -3,4 +3,4 @@ Dockerfile
 context.json
 docker-compose.yml
 entrypoint.sh
-3d_scans/
+data/
