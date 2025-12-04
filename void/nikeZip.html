@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITEM // NIKE ZIP UP</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <style>
+        @font-face { 
+            font-family: KazmannSans; 
+            src: url('../kazmann-sans/Kazmann Sans.ttf'); 
+        }
+
+        :root {
+            --red: #ff0000;
+            --blood-red: #590000;
+            --dark-red: #2a0000;
+            --void-bg: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: transparent;
+            color: #ddd;
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            overflow: hidden; 
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1;
+            background-color: var(--blood-red);
+        }
+
+        /* Navigation */
+        .item-nav {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+
+        .back-link {
+            color: #fff;
+            text-decoration: none;
+            font-family: KazmannSans;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0 #000;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--red);
+            text-shadow: 0 0 10px var(--blood-red);
+            letter-spacing: 2px;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .product-interface {
+            display: grid;
+            grid-template-columns: 1fr 450px; 
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Left Column: 3D Viewer */
+        .viewer-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-stage:active {
+            cursor: grabbing;
+        }
+
+        /* Model Viewer Styling */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            --poster-color: transparent;
+        }
+
+        /* Right Column: Data Panel */
+        .data-panel {
+            background: rgba(10, 0, 0, 0.95);
+            border-left: 2px solid var(--blood-red);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+            box-shadow: -20px 0 50px rgba(0,0,0,1);
+        }
+
+        .item-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: KazmannSans;
+            font-size: 4rem; 
+            color: #fff;
+            line-height: 0.8;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 0 var(--dark-red);
+        }
+
+
+        .meta-tags {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid #333;
+            padding: 10px;
+            display: inline-block;
+            background: #000;
+        }
+
+        .description {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-family: 'Courier New', monospace;
+            border-left: 1px solid #333;
+            padding-left: 20px;
+        }
+
+        /* Decoration / "Busy" Elements */
+        .decor-text {
+            position: absolute;
+            font-family: KazmannSans;
+            color: rgba(255,255,255,0.03);
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .product-interface { grid-template-columns: 1fr; grid-template-rows: 1fr auto; height: auto; overflow-y: auto; }
+            body { overflow: auto; }
+            .viewer-stage { height: 60vh; }
+            .data-panel { width: 100%; height: auto; border-left: none; border-top: 2px solid var(--blood-red); }
+            .item-nav { top: 20px; left: 20px; }
+            h1 { font-size: 3rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <nav class="item-nav">
+        <a href="../void.html" class="back-link">&lt; RETURN TO VOID</a>
+    </nav>
+
+    <div class="product-interface">
+        
+        <div class="viewer-stage">
+            
+            <model-viewer 
+                src="../data/3d_scans/nikeZip.glb" 
+                poster="../data/images/drop_3/nikeZip.png"
+                alt="3D Model of Nike Zip Tee"
+                camera-controls 
+                camera-target="0m 0.55m 0m"
+                shadow-intensity="1"
+                exposure="0.55"
+                auto-rotate
+                rotation-per-second="10deg">
+                
+                <div slot="progress-bar"></div>
+            </model-viewer>
+
+            <div class="decor-text" style="bottom: 20px; left: 20px; font-size: 1rem;">SCAN_ID: DROP3_001</div>
+
+        </div>
+
+        <div class="data-panel">
+            <div class="decor-text" style="top: 10%; right: -20px; font-size: 8rem; transform: rotate(90deg);">DATA</div>
+
+            <div class="item-header">
+                <h1>NIKE<br>ZIP UP</h1>
+                <div class="meta-tags">SIZE: L // VINTAGE: YES // SOURCE: GOODWILL BINS</div>
+            </div>
+
+            <p class="description">
+                Genuine artifact recovered from the substrate. Features heavy distressing consistent with decades of audio exposure. 
+                <br><br>
+                Fabric composition: 100% Cotton (Decayed).
+                <br>
+                Status: READY FOR CONSUMPTION.
+            </p>
+        </div>
+
+    </div>
+    <script type="importmap">
+        { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // Noise function chunk
+        const noiseChunk = `
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+            float snoise(vec3 v) {
+                const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                vec3 i  = floor(v + dot(v, C.yyy));
+                vec3 x0 = v - i + dot(i, C.xxx);
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min(g.xyz, l.zxy);
+                vec3 i2 = max(g.xyz, l.zxy);
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy;
+                vec3 x3 = x0 - D.yyy;
+                i = mod289(i);
+                vec4 p = permute(permute(permute(i.z + vec4(0.0, i1.z, i2.z, 1.0)) + i.y + vec4(0.0, i1.y, i2.y, 1.0)) + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                float n_ = 0.142857142857;
+                vec3 ns = n_ * D.wyz - D.xzx;
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_);
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+                vec4 b0 = vec4(x.xy, y.xy);
+                vec4 b1 = vec4(x.zw, y.zw);
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                vec3 p0 = vec3(a0.xy, h.x);
+                vec3 p1 = vec3(a0.zw, h.y);
+                vec3 p2 = vec3(a1.xy, h.z);
+                vec3 p3 = vec3(a1.zw, h.w);
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+                p0 *= norm.x;
+                p1 *= norm.y;
+                p2 *= norm.z;
+                p3 *= norm.w;
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+            }
+        `;
+
+        const vertexShader = `
+            uniform float uTime;
+            uniform float uFrequency;
+            ${noiseChunk}
+            void main() {
+                mat4 instanceMat = instanceMatrix;
+                vec3 instancePos = vec3(instanceMat[3][0], instanceMat[3][1], instanceMat[3][2]);
+                
+                vec3 noiseCoord = instancePos * uFrequency;
+                
+                // Animate noise over time
+                float noise1 = snoise(vec3(noiseCoord.x, noiseCoord.y, uTime * 0.2));
+                float noise2 = snoise(vec3(noiseCoord.x * 2.0, noiseCoord.y * 2.0, uTime * 0.3 + 100.0));
+                
+                float combinedNoise = noise1 * 0.6 + noise2 * 0.4;
+                
+                // Create gaps/voids
+                float visibility = smoothstep(-0.4, 0.4, combinedNoise);
+                float scale = mix(0.0, 1.0, visibility);
+                
+                vec3 displaced = position;
+                displaced.z += combinedNoise * 10.0;
+                
+                vec3 scaledPosition = displaced * scale;
+                
+                vec4 mvPosition = modelViewMatrix * instanceMat * vec4(scaledPosition, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        const fragmentShader = `
+            void main() {
+                // Geometry Color: Black (Silhouettes against red background)
+                vec3 color = vec3(0.0, 0.0, 0.0); 
+                
+                // Calculate edge using derivatives
+                vec3 normal = normalize(cross(dFdx(vec3(gl_FragCoord.xy, 0.0)), dFdy(vec3(gl_FragCoord.xy, 0.0))));
+                float edge = abs(normal.z);
+                
+                // Pure black output
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        // 1. Scene Setup
+        const scene = new THREE.Scene();
+        // Fog blends the distant cubes into the void (dark grey matches the dark red aesthetic well)
+        scene.fog = new THREE.FogExp2(0x050505, 0.015);
+        
+        const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 80);
+        camera.lookAt(0,0,0);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // FIXED: Add pixel ratio for sharp rendering on high DPI screens
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // 2. Geometry & Material
+        const gridSize = 100; 
+        const spacing = 2.5;
+        const count = gridSize * gridSize;
+        const geometry = new THREE.BoxGeometry(2,2,2);
+        
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uFrequency: { value: 0.04 }
+            },
+            vertexShader,
+            fragmentShader,
+            side: THREE.DoubleSide,
+            // FIXED: Explicitly enable derivatives for dFdx/dFdy to work safely on all platforms
+            extensions: {
+                derivatives: true
+            }
+        });
+
+        // 3. Instancing
+        const mesh = new THREE.InstancedMesh(geometry, material, count);
+        const dummy = new THREE.Object3D();
+        let idx = 0;
+        
+        for(let x=0; x<gridSize; x++){
+            for(let y=0; y<gridSize; y++){
+                dummy.position.set( (x - gridSize/2)*spacing, (y - gridSize/2)*spacing, -20);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(idx++, dummy.matrix);
+            }
+        }
+        mesh.instanceMatrix.needsUpdate = true;
+        scene.add(mesh);
+
+        // 4. Animation Loop
+        const clock = new THREE.Clock();
+        function animate(){
+            requestAnimationFrame(animate);
+            material.uniforms.uTime.value = clock.getElapsedTime();
+            
+            // Slowly rotate the whole grid
+            mesh.rotation.x = Math.sin(clock.getElapsedTime()*0.1)*0.05;
+            
+            renderer.render(scene, camera);
+        }
+        
+        // 5. Resize Handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+        });
+
+        animate();
+    </script>
+
+</body>
+</html>

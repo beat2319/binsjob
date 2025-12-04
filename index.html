@@ -41,7 +41,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background-image: url('images/site/background.jpeg');
+            background-image: url('data/images/site/background.jpeg');
             background-size: 400px;
             opacity: 0.8; 
             z-index: -2;
@@ -89,15 +89,20 @@
         /* --- HEADER & BINMAN ANIMATION --- */
         .portal-header {
             height: 100px;
-            background-image: url('images/site/topbar.jpeg');
+            background-image: url('data/images/site/topbar.jpeg');
             background-size: cover;
             background-position: center;
             border-bottom: 2px solid var(--ui-red);
+            transition: border-color 0.5s ease;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+        }
+        
+        body:has(.nav-btn.archive:hover) .portal-header {
+            border-bottom-color: #555;
         }
         
         .portal-header::before {
@@ -114,7 +119,7 @@
             top: 10%;
             height: 120%;
             width: auto;
-            opacity: 0.6;
+            opacity: 0.75;
             filter: grayscale(100%) contrast(150%);
             z-index: 0;
             animation: ghost-walk 15s linear infinite;
@@ -253,7 +258,7 @@
     <div class="portal-container">
         
         <div class="portal-header">
-            <img src="images/site/binman.png" class="binman-ghost" alt="Binman">
+            <img src="data/images/site/binman.png" class="binman-ghost" alt="Binman">
             <div class="logo-text">BINSJOB</div>
         </div>
 
@@ -264,7 +269,7 @@
             </div>
 
             <div class="center-stage">
-                <img src="images/site/fish_guy.jpg" alt="The Fish Guy" class="fish-guy">
+                <img src="data/images/site/fish_guy.jpg" alt="The Fish Guy" class="fish-guy">
             </div>
 
             <div class="action-zone right">

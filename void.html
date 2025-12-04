@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE VOID // INVENTORY</title>
+    <title>THE VOID // DROP 3</title>
     <style>
         @font-face { 
             font-family: KazmannSans; 
@@ -35,7 +35,7 @@
             z-index: -1;
         }
 
-        /* Scanline Overlay - Now strictly background atmosphere */
+        /* Scanline Overlay */
         body::after {
             content: " ";
             display: block;
@@ -43,7 +43,7 @@
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(10, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0.05), rgba(255, 0, 0, 0.03));
-            z-index: 5; /* Lower z-index so it doesn't cover the floating items (z-index 10+) */
+            z-index: 5; 
             background-size: 100% 3px, 3px 100%;
             pointer-events: none;
         }
@@ -100,7 +100,7 @@
             align-items: center;
             transition: transform 0.3s ease;
             animation: float-anim 6s ease-in-out infinite;
-            z-index: 20; /* Ensure items sit ABOVE the scanlines */
+            z-index: 20;
         }
 
         .float-item:nth-child(2n) { animation-delay: 1s; margin-top: 50px; }
@@ -111,52 +111,43 @@
             50% { transform: translateY(-15px) rotate(1deg); }
         }
 
-        /* Image Visual Container - Minimal Frame */
+        /* Image Visual Container */
         .item-visual {
             position: relative;
             width: 100%;
             max-width: 400px;
             aspect-ratio: 1/1;
-            /* Removed heavy background tint */
             background: transparent; 
-            /* Subtle border */
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+            /* Border removed here */
+            border: none; 
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            text-decoration: none; 
         }
 
-        /* CLEAN PRODUCT IMAGES */
         .item-visual img {
-            width: 95%; /* Make slightly larger to emphasize item */
+            width: 95%; 
             height: auto;
-            /* No Filters - Raw Image */
             filter: none;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             drop-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        /* Hover Interaction */
-        .float-item:hover .item-visual {
-            border-color: var(--blood-red);
-            /* Add a subtle glow behind the item on hover, not over it */
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.15); 
-            background: rgba(0,0,0,0.4);
-        }
-
+        /* Hover Interaction - Box Highlight Removed */
+        /* Only the image zoom remains */
         .float-item:hover img {
             transform: scale(1.1);
-            /* Slight pop on hover */
             drop-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
 
-        /* Item Details */
+        /* Item Details - Minimal Title Only */
         .item-data {
             margin-top: 20px;
             text-align: center;
-            opacity: 0.8; /* Increased visibility */
+            opacity: 0.8;
             transition: opacity 0.3s;
         }
 
@@ -166,94 +157,10 @@
             color: #fff;
             margin-bottom: 5px;
             text-shadow: 0 2px 5px #000;
-        }
-
-        .item-price {
-            color: var(--blood-red);
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Bin Action Button */
-        .bin-action {
-            background: transparent;
-            border: 1px solid #555;
-            color: #aaa;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: inherit;
             text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 2px;
-            transition: all 0.2s;
         }
 
-        .bin-action:hover {
-            border-color: var(--blood-red);
-            color: #fff;
-            background: var(--blood-red);
-            box-shadow: 0 0 15px rgba(255,0,0,0.5);
-        }
-
-        /* Bin UI */
-        .bin-ui {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            border: 2px solid #333;
-            background: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            z-index: 1000;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
-        
-        .bin-ui:hover {
-            border-color: var(--blood-red);
-            transform: rotate(15deg) scale(1.1);
-        }
-
-        .bin-counter {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--blood-red);
-            color: #000;
-            font-size: 12px;
-            font-weight: bold;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Binman Sprite */
-        .binman-sprite {
-            position: fixed;
-            bottom: -200px;
-            right: 20px;
-            width: 180px;
-            transition: bottom 0.4s ease-out;
-            z-index: 999;
-            pointer-events: none;
-            filter: contrast(120%) drop-shadow(0 0 10px #000);
-        }
-
-        .bin-ui:hover ~ .binman-sprite {
-            bottom: -40px;
-        }
-
-        /* Background Text (Lore) */
+        /* Background Text */
         .bg-text {
             position: absolute;
             font-family: KazmannSans;
@@ -275,108 +182,135 @@
 
     <nav class="void-nav">
         <a href="index.html">&lt; PORTAL</a>
-        <a href="archive.html">ARCHIVE &gt;</a>
     </nav>
 
     <div class="void-space">
         
-        <div class="bg-text" style="top: 10%; left: 5%; font-size: 10rem;">VOID</div>
+        <div class="bg-text" style="top: 10%; left: 5%; font-size: 10rem;">DROP_3</div>
         <div class="bg-text" style="top: 40%; right: -10%; font-size: 8rem; transform: rotate(90deg);">CONSUME</div>
         <div class="bg-text" style="bottom: 10%; left: 20%; font-size: 6rem;">ERROR_404</div>
 
         <div class="floating-grid">
             
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010007.jpeg" alt="Shirt 1">
-                </div>
+                <a href="void/aerosmith.html" class="item-visual">
+                    <img src="data/images/drop_3/aerosmith.png" alt="Aerosmith">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">300 SPARTAN</div>
-                    <div class="item-price">$40.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">AEROSMITH</div>
                 </div>
             </div>
 
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010012.jpeg" alt="Shirt 2">
-                </div>
+                <a href="void/billie.html" class="item-visual">
+                    <img src="data/images/drop_3/billie.png" alt="Billie">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">MST3K ROBOT</div>
-                    <div class="item-price">$45.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">BILLIE</div>
                 </div>
             </div>
 
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010016.jpeg" alt="Shirt 3">
-                </div>
+                <a href="void/bultaco.html" class="item-visual">
+                    <img src="data/images/drop_3/bultaco.png" alt="Bultaco">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">NATIVE GEO</div>
-                    <div class="item-price">$35.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">BULTACO</div>
                 </div>
             </div>
 
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010020.jpeg" alt="Shirt 4">
-                </div>
+                <a href="void/DBZ.html" class="item-visual">
+                    <img src="data/images/drop_3/DBZ.png" alt="DBZ">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">SURF CAMP</div>
-                    <div class="item-price">$30.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">DRAGON BALL Z</div>
                 </div>
             </div>
 
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010024.jpeg" alt="Shirt 5">
-                </div>
+                <a href="void/F1.html" class="item-visual">
+                    <img src="data/images/drop_3/F1.png" alt="F1">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">HARLEY EAGLE</div>
-                    <div class="item-price">$50.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">FORMULA 1</div>
                 </div>
             </div>
 
             <div class="float-item">
-                <div class="item-visual">
-                    <img src="images/product/P1010025.jpeg" alt="Shirt 6">
-                </div>
+                <a href="void/FBI.html" class="item-visual">
+                    <img src="data/images/drop_3/FBI.png" alt="FBI">
+                </a>
                 <div class="item-data">
-                    <div class="item-title">REVOLUTION</div>
-                    <div class="item-price">$40.00</div>
-                    <button class="bin-action" onclick="toBin()">ADD TO BIN</button>
+                    <div class="item-title">EDDIE LUBIN'S</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/metallica.html" class="item-visual">
+                    <img src="data/images/drop_3/metallica.png" alt="Metallica">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">METALLICA</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/nikeZip.html" class="item-visual">
+                    <img src="data/images/drop_3/nikeZip.png" alt="Nike Zip">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">NIKE ZIP</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/R&S.html" class="item-visual">
+                    <img src="data/images/drop_3/R&S.png" alt="Ren and Stimpy">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">REN & STIMPY</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/singles.html" class="item-visual">
+                    <img src="data/images/drop_3/singles.png" alt="Singles">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">CITZEN DICK</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/smashingPumpkins.html" class="item-visual">
+                    <img src="data/images/drop_3/smashingPumpkins.png" alt="Smashing Pumpkins">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">SMASHING PUMPKINS</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/southPark.html" class="item-visual">
+                    <img src="data/images/drop_3/southPark.png" alt="South Park">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">SOUTH PARK</div>
+                </div>
+            </div>
+
+            <div class="float-item">
+                <a href="void/tabasco.html" class="item-visual">
+                    <img src="data/images/drop_3/tabasco.png" alt="Tabasco">
+                </a>
+                <div class="item-data">
+                    <div class="item-title">TABASCO</div>
                 </div>
             </div>
 
         </div>
     </div>
-
-    <div class="bin-ui">
-        🗑️
-        <div class="bin-counter" id="count">0</div>
-    </div>
-    <img src="images/site/binman.png" class="binman-sprite" alt="Binman">
-
-    <script>
-        let items = 0;
-        function toBin() {
-            items++;
-            document.getElementById('count').innerText = items;
-            
-            // Red Jiggle
-            const bin = document.querySelector('.bin-ui');
-            bin.style.transform = 'scale(1.4) rotate(-10deg)';
-            bin.style.borderColor = '#fff';
-            setTimeout(() => {
-                bin.style.transform = 'scale(1) rotate(0deg)';
-                bin.style.borderColor = '#333';
-            }, 200);
-        }
-    </script>
 
     <script type="importmap">
         { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
@@ -457,11 +391,16 @@
 
         const fragmentShader = `
             void main() {
-                // Blood Red Atmosphere
-                vec3 color = vec3(0.12, 0.0, 0.0); 
+                // Brighter Blood Red Atmosphere
+                // Base red increased from 0.12 to 0.35
+                vec3 color = vec3(0.35, 0.0, 0.0); 
+                
                 vec3 normal = normalize(cross(dFdx(vec3(gl_FragCoord.xy, 0.0)), dFdy(vec3(gl_FragCoord.xy, 0.0))));
                 float edge = abs(normal.z);
-                color += vec3(0.2, 0.0, 0.0) * (1.0 - edge);
+                
+                // Edge glow increased from 0.2 to 0.4
+                color += vec3(0.4, 0.0, 0.0) * (1.0 - edge);
+                
                 gl_FragColor = vec4(color, 1.0);
             }
         `;

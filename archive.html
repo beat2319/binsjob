@@ -24,7 +24,7 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: url('images/site/topbar.jpeg');
+            background-image: url('data/images/site/topbar.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -50,7 +50,7 @@
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999;
+            z-index: 10;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
@@ -61,7 +61,6 @@
             /* Reduced top padding to move "Return to Portal" up */
             padding: 20px 20px 100px 20px; 
             position: relative;
-            z-index: 10;
         }
 
         /* Header Section */
@@ -123,12 +122,14 @@
             transition: all 0.2s ease;
             position: relative;
             overflow: visible;
+            z-index: 1;
         }
 
         .entry:hover {
             background: #111;
             border-color: var(--term-green);
             transform: translateX(10px);
+            z-index: 200;
         }
 
         .id-code {
@@ -169,64 +170,14 @@
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: grayscale(100%) contrast(150%);
             z-index: 20;
-            border: 2px solid #fff;
-            box-shadow: 10px 10px 0 #000;
         }
 
         .entry:hover .preview-img {
             opacity: 1;
             transform: translateY(-50%) scale(1.5) rotate(0deg);
-            right: 180px; /* Move it out slightly */
-        }
-
-        /* Binman - The Custodian (Moved Lower) */
-        .binman-wrapper {
-            position: fixed;
-            bottom: -150px; /* Moved down significantly */
-            right: -20px;
-            width: 300px;
-            height: 400px;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .binman {
-            width: 100%;
-            height: auto;
-            filter: drop-shadow(-10px -10px 20px rgba(0,0,0,0.8));
-            animation: breathe 4s infinite ease-in-out;
-        }
-
-        .speech-bubble {
-            position: absolute;
-            top: 40px;
-            left: -100px;
-            background: #fff;
-            color: #000;
-            padding: 10px 15px;
-            font-family: KazmannSans, sans-serif;
-            font-size: 16px;
-            border-radius: 50%;
-            width: 140px;
-            text-align: center;
-            box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: scale(0);
-            animation: popup 5s infinite 2s; /* Delays text appearance */
-        }
-        
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 20px;
-            border-width: 10px 10px 0;
-            border-style: solid;
-            border-color: #fff transparent;
-            display: block;
-            width: 0;
+            right: 180px; 
+            z-index: auto
         }
 
         @keyframes breathe {
@@ -272,7 +223,7 @@
             </div>
             <div class="sys-info">
                 SYS_TIME: <span id="clock">00:00:00</span><br>
-                MEM_USAGE: 94%<br>
+                MEM_USAGE: 67%<br>
                 ERRORS: 404
             </div>
         </header>
@@ -280,71 +231,66 @@
         <div class="archive-list">
             
             <div class="entry">
-                <div class="id-code">#A-001</div>
+                <div class="id-code">SEP 2025</div>
                 <div class="item-info">
-                    <h2>Harley "Eagle" Tee</h2>
-                    <div class="item-tags">Vintage // Cotton // 2004</div>
+                    <h2>Modest Mouse Whale Tee</h2>
+                    <div class="item-tags">Tour // ANVIL // 2004</div>
                 </div>
-                <div class="status">AVAILABLE</div>
-                <img src="images/product/P1010024.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/modestMouse.png" class="preview-img" alt="Product">
             </div>
 
             <div class="entry">
-                <div class="id-code">#A-002</div>
+                <div class="id-code">AUG 2025</div>
                 <div class="item-info">
-                    <h2>"Revolution" Print</h2>
-                    <div class="item-tags">Graphic // Rare // Distressed</div>
+                    <h2>The Dark Knight Joker Tee</h2>
+                    <div class="item-tags">Movie // DC Comics  // 2008</div>
                 </div>
-                <div class="status">LOW_STOCK</div>
-                <img src="images/product/P1010025.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/joker.png" class="preview-img" alt="Product">
             </div>
 
             <div class="entry">
-                <div class="id-code">#B-104</div>
+                <div class="id-code">SEP 2023</div>
                 <div class="item-info">
-                    <h2>Surf Camp Australia</h2>
-                    <div class="item-tags">Souvenir // Black // Fade</div>
+                    <h2>"iPhone It’s here." Tee</h2>
+                    <div class="item-tags">Promo // Apple // 2007</div>
                 </div>
-                <div class="status">AVAILABLE</div>
-                <img src="images/product/P1010020.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/iphone.png" class="preview-img" alt="Product">
             </div>
 
             <div class="entry">
-                <div class="id-code">#C-099</div>
+                <div class="id-code">JUL 2023</div>
                 <div class="item-info">
-                    <h2>Northern Thunder</h2>
-                    <div class="item-tags">Harley Davidson // Canada</div>
+                    <h2>"Smash Head on Keyboard" Tee</h2>
+                    <div class="item-tags">Humor // Tech // 1990s</div>
                 </div>
-                <div class="status">ARCHIVED</div>
-                <img src="images/product/P1010034.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/computer.png" class="preview-img" alt="Product">
             </div>
 
             <div class="entry">
-                <div class="id-code">#X-999</div>
+                <div class="id-code">OCT 2022</div>
                 <div class="item-info">
-                    <h2>Mystery Science T3K</h2>
-                    <div class="item-tags">Crow // TV // Cult</div>
+                    <h2>New York Letterman Jacket</h2>
+                    <div class="item-tags">Bootleg // Starter // 1990s</div>
                 </div>
-                <div class="status">SOLD_OUT</div>
-                <img src="images/product/P1010012.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/NY.png" class="preview-img" alt="Product">
             </div>
 
             <div class="entry">
-                <div class="id-code">#Z-001</div>
+                <div class="id-code">DEC 2021</div>
                 <div class="item-info">
-                    <h2>TDK Splatter</h2>
-                    <div class="item-tags">Audio // Tech // Grunge</div>
+                    <h2>Santa Fe Style Jacket</h2>
+                    <div class="item-tags">Carhartt // Workwear // 1990s</div>
                 </div>
-                <div class="status">DAMAGED</div>
-                <img src="images/product/P1010038.jpeg" class="preview-img" alt="Product">
+                <div class="status">SOLD</div>
+                <img src="data/images/past/santaFe.png" class="preview-img" alt="Product">
             </div>
 
         </div>
-    </div>
-
-    <div class="binman-wrapper">
-        <div class="speech-bubble">I keep the trash safe...</div>
-        <img src="images/site/binman.png" class="binman" alt="The Binman">
     </div>
 
     <script>
