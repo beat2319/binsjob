@@ -16,6 +16,8 @@
             --blood-red: #590000;
             --dark-red: #2a0000;
             --void-bg: #050505;
+            --purchase-green: #076e00; /* Darker Green */
+            --neon-green: #39ff14;    /* Bright Green */
         }
 
         * {
@@ -129,7 +131,7 @@
 
         .meta-tags {
             font-size: 12px;
-            color: #666;
+            color: #adadad;
             text-transform: uppercase;
             letter-spacing: 2px;
             border: 1px solid #333;
@@ -146,6 +148,41 @@
             font-family: 'Courier New', monospace;
             border-left: 1px solid #333;
             padding-left: 20px;
+        }
+
+        /* --- UPDATED PURCHASE LINK STYLES --- */
+        .purchase-container {
+            margin-bottom: 30px;
+        }
+
+        .purchase-link {
+            display: inline-block;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: KazmannSans, sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            
+            /* The Box - Darker Green Default */
+            color: var(--purchase-green);
+            border: 2px solid var(--purchase-green);
+            background: rgba(7, 110, 0, 0.05); /* Very slight green tint */
+            padding: 15px 40px;
+            
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .purchase-link:hover {
+            /* The Highlight - Bright Green */
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
+            
+            /* Glow Effect */
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3), inset 0 0 10px rgba(57, 255, 20, 0.1);
+            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 3px; /* Expands slightly on hover */
         }
 
         /* Decoration / "Busy" Elements */
@@ -184,7 +221,7 @@
             
             <model-viewer 
                 src="../data/3d_scans/smashingPumkins.glb" 
-                poster="../data/images/drop_3/smashingPumkins.png"
+                poster="../data/images/drop_3/smashingPumpkins.png"
                 alt="3D Model of Singles Tee"
                 camera-controls 
                 camera-target="0m 0.5m 0m"
@@ -202,17 +239,22 @@
 
         <div class="data-panel">
             <div class="decor-text" style="top: 10%; right: -20px; font-size: 8rem; transform: rotate(90deg);">DATA</div>
-
             <div class="item-header">
                 <h1>SMASHING PUMPKINS<br>TEE</h1>
-                <div class="meta-tags">SIZE: L // VINTAGE: YES // SOURCE: GOODWILL BINS</div>
+                <div class="meta-tags">SIZE: XL // PRICE: 900$ // SOURCE: GOODWILL BINS</div>
+            </div>
+
+            <div class="purchase-container">
+                <a href="https://www.depop.com/products/binsjob-1996-smashing-pumpkins-siamese-dream/" class="purchase-link">PURCHASE</a>
             </div>
 
             <p class="description">
-                Genuine artifact recovered from the substrate. Features heavy distressing consistent with decades of audio exposure. 
+                Genuine artifact recovered from the substrate.  
                 <br><br>
-                Fabric composition: 100% Cotton (Decayed).
+                1996 Smashing Pumpkins "Siamese Dream" 
                 <br>
+                Width: 22in x Length: 29in
+                <br><br>
                 Status: READY FOR CONSUMPTION.
             </p>
         </div>
@@ -321,7 +363,7 @@
 
         // 1. Scene Setup
         const scene = new THREE.Scene();
-        // Fog blends the distant cubes into the void (dark grey matches the dark red aesthetic well)
+        // Fog blends the distant cubes into the void
         scene.fog = new THREE.FogExp2(0x050505, 0.015);
         
         const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -330,7 +372,6 @@
         
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        // FIXED: Add pixel ratio for sharp rendering on high DPI screens
         renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
@@ -348,7 +389,6 @@
             vertexShader,
             fragmentShader,
             side: THREE.DoubleSide,
-            // FIXED: Explicitly enable derivatives for dFdx/dFdy to work safely on all platforms
             extensions: {
                 derivatives: true
             }

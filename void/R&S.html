@@ -16,6 +16,8 @@
             --blood-red: #590000;
             --dark-red: #2a0000;
             --void-bg: #050505;
+            --purchase-green: #076e00; 
+            --neon-green: #39ff14;    
         }
 
         * {
@@ -129,7 +131,7 @@
 
         .meta-tags {
             font-size: 12px;
-            color: #666;
+            color: #adadad;
             text-transform: uppercase;
             letter-spacing: 2px;
             border: 1px solid #333;
@@ -146,6 +148,41 @@
             font-family: 'Courier New', monospace;
             border-left: 1px solid #333;
             padding-left: 20px;
+        }
+
+        /* --- UPDATED PURCHASE LINK STYLES --- */
+        .purchase-container {
+            margin-bottom: 30px;
+        }
+
+        .purchase-link {
+            display: inline-block;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: KazmannSans, sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            
+            /* The Box - Darker Green Default */
+            color: var(--purchase-green);
+            border: 2px solid var(--purchase-green);
+            background: rgba(7, 110, 0, 0.05); /* Very slight green tint */
+            padding: 15px 40px;
+            
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .purchase-link:hover {
+            /* The Highlight - Bright Green */
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
+            
+            /* Glow Effect */
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3), inset 0 0 10px rgba(57, 255, 20, 0.1);
+            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 3px; /* Expands slightly on hover */
         }
 
         /* Decoration / "Busy" Elements */
@@ -205,14 +242,20 @@
 
             <div class="item-header">
                 <h1>REN & STIMPY<br>TEE</h1>
-                <div class="meta-tags">SIZE: L // VINTAGE: YES // SOURCE: GOODWILL BINS</div>
+                <div class="meta-tags">SIZE: L // PRICE: YES // SOURCE: GOODWILL BINS</div>
+            </div>
+
+            <div class="purchase-container">
+                <a href="https://www.depop.com/products/binsjob-vintage-ren-stimpy-vintage/" class="purchase-link">PURCHASE</a>
             </div>
 
             <p class="description">
-                Genuine artifact recovered from the substrate. Features heavy distressing consistent with decades of audio exposure. 
+                Genuine artifact recovered from the substrate.  
                 <br><br>
-                Fabric composition: 100% Cotton (Decayed).
+                1992 Ren & Stimpy "Dr. STUPID" 
                 <br>
+                Width: 21.5 in x Length: 27.5in
+                <br><br>
                 Status: READY FOR CONSUMPTION.
             </p>
         </div>
