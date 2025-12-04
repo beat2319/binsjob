@@ -13,8 +13,6 @@
         :root {
             --blood-red: #ff0000;
             --void-bg: #050505;
-            --neon-blue: #00f3ff;
-            --neon-yellow: #fff200;
         }
 
         * {
@@ -50,16 +48,13 @@
             pointer-events: none;
         }
 
-        /* Navigation - UPDATED ALIGNMENT */
+        /* Navigation */
         .void-nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
             padding: 30px;
             display: flex;
-            /* Changed from space-between to flex-start to group them left */
-            justify-content: flex-start; 
-            /* Added gap to separate the links */
-            gap: 50px; 
+            justify-content: space-between;
             align-items: center;
             z-index: 1000;
             pointer-events: none;
@@ -75,21 +70,9 @@
             transition: color 0.3s;
         }
 
-        /* Default Red Hover */
         .void-nav a:hover { 
             color: var(--blood-red); 
             text-shadow: 0 0 15px var(--blood-red);
-        }
-
-        /* Specific Color Hovers */
-        .void-nav a.nav-outerwear:hover {
-            color: var(--neon-blue);
-            text-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        .void-nav a.nav-tees:hover {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 15px var(--neon-yellow);
         }
 
         /* Main Scroll Wrapper */
@@ -135,6 +118,7 @@
             max-width: 400px;
             aspect-ratio: 1/1;
             background: transparent; 
+            /* Border removed here */
             border: none; 
             display: flex;
             justify-content: center;
@@ -152,12 +136,14 @@
             drop-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
+        /* Hover Interaction - Box Highlight Removed */
+        /* Only the image zoom remains */
         .float-item:hover img {
             transform: scale(1.1);
             drop-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
 
-        /* Item Details */
+        /* Item Details - Minimal Title Only */
         .item-data {
             margin-top: 20px;
             text-align: center;
@@ -195,9 +181,7 @@
     <div id="canvas-container"></div>
 
     <nav class="void-nav">
-        <a href="index.html">&lt; PORTAL</a>
-        <a href="void-outerwear.html" class="nav-outerwear">OUTERWEAR</a>
-        <a href="void-tees.html" class="nav-tees">TEES</a>
+        <a href="void.html">&lt; VOID</a>
     </nav>
 
     <div class="void-space">
@@ -214,15 +198,6 @@
                 </a>
                 <div class="item-data">
                     <div class="item-title">AEROSMITH</div>
-                </div>
-            </div>
-
-            <div class="float-item">
-                <a href="void/billie.html" class="item-visual">
-                    <img src="data/images/drop_3/billie.png" alt="Billie">
-                </a>
-                <div class="item-data">
-                    <div class="item-title">BILLIE</div>
                 </div>
             </div>
 
@@ -245,15 +220,6 @@
             </div>
 
             <div class="float-item">
-                <a href="void/F1.html" class="item-visual">
-                    <img src="data/images/drop_3/F1.png" alt="F1">
-                </a>
-                <div class="item-data">
-                    <div class="item-title">FORMULA 1</div>
-                </div>
-            </div>
-
-            <div class="float-item">
                 <a href="void/FBI.html" class="item-visual">
                     <img src="data/images/drop_3/FBI.png" alt="FBI">
                 </a>
@@ -268,15 +234,6 @@
                 </a>
                 <div class="item-data">
                     <div class="item-title">METALLICA</div>
-                </div>
-            </div>
-
-            <div class="float-item">
-                <a href="void/nikeZip.html" class="item-visual">
-                    <img src="data/images/drop_3/nikeZip.png" alt="Nike Zip">
-                </a>
-                <div class="item-data">
-                    <div class="item-title">NIKE ZIP</div>
                 </div>
             </div>
 
@@ -334,7 +291,7 @@
     <script type="module">
         import * as THREE from 'three';
 
-        // Noise and Shader code kept identical for stability
+        // Same noise chunk as before
         const noiseChunk = `
             vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
             vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -407,14 +364,18 @@
 
         const fragmentShader = `
             void main() {
-                // Brighter Blood Red Atmosphere
-                vec3 color = vec3(0.35, 0.0, 0.0); 
+                // Converted #ffae00 to vec3(1.0, 0.682, 0.0)
+                vec3 baseColor = vec3(1.0, 0.682, 0.0); 
                 
+                vec3 color = baseColor;
+                
+                // Calculate normal based on screen derivatives (flat shading look)
                 vec3 normal = normalize(cross(dFdx(vec3(gl_FragCoord.xy, 0.0)), dFdy(vec3(gl_FragCoord.xy, 0.0))));
                 float edge = abs(normal.z);
                 
-                // Edge glow 
-                color += vec3(0.4, 0.0, 0.0) * (1.0 - edge);
+                // Add glow using the same orange color
+                // Multiplied by 0.5 to keep it from blowing out to pure white immediately
+                color += baseColor * 0.5 * (1.0 - edge);
                 
                 gl_FragColor = vec4(color, 1.0);
             }
